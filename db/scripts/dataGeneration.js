@@ -53,7 +53,7 @@ const csvGen2 = (id) => {
 };
 
 const writeDataToFile = (totalEntries) => {
-  const fileWriteStream = fs.createWriteStream(path.join(__dirname, '/data/gallerydata.csv'));
+  const fileWriteStream = fs.createWriteStream(path.join(__dirname, '/data/gallerydata2.csv'));
 
   const writeChunksToFile = (timesRun) => {
     if (currentId >= totalEntries) {
@@ -62,7 +62,7 @@ const writeDataToFile = (totalEntries) => {
       return;
     }
     // const proceed = fileWriteStream.write(JSON.stringify(jsonGen(currentId)) + '\n');
-    const proceed = fileWriteStream.write(csvGen2(currentId));
+    const proceed = fileWriteStream.write(csvGen(currentId));
     if (proceed) {
       writeChunksToFile(timesRun + 1);
     } else {
