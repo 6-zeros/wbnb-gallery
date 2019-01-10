@@ -4,3 +4,6 @@
 /enzyme.config.js
 /spec
 /coverage
+/db/images
+/db/scripts/data
+package-lock.json

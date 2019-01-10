@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://172.17.0.2:27017/errbnb', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/errbnb', { useNewUrlParser: true });
 const connect = mongoose.connection;
 connect.on('error', console.error.bind(console, 'connection error:'));
 connect.once('open', function callback () {
