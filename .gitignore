@@ -7,3 +7,4 @@
 /db/images
 /db/scripts/data
 package-lock.json
+*.csv
