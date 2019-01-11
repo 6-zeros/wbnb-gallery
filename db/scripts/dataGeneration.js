@@ -4,15 +4,17 @@ const path = require('path');
 
 let currentId = 1;
 let currentFile = 1;
+const currDir = 'gallerydata';
+const currExt = 'csv';
 let firstRow = true;
 const start = new Date().getTime();
 
 const generateRandomNumber = (min, max) => {
-  let randomNumber = Math.round(Math.random() * max);
-  if (randomNumber < min) {
-    randomNumber = Math.round(Math.random() * max);
+  const randomNumber = Math.round(Math.random() * max);
+  if (randomNumber >= min) {
+    return randomNumber;
   }
-  return randomNumber;
+  return generateRandomNumber(min, max);
 };
 
 const jsonGen = (id) => {
@@ -40,17 +42,18 @@ const csvGen = (id) => {
 
 const csvGen2 = (id) => {
   let outputRow = '';
+  const numberOfPhotos = generateRandomNumber(6, 11);
 
-  for (let i = 1; i < 6; i += 1) {
+  for (let i = 1; i < numberOfPhotos; i += 1) {
     outputRow += `${id},`;
-    outputRow += `roomname${id}${i},`;
-    outputRow += `uniq${id}${faker.random.number()},`;
+    outputRow += `roomname${id},`;
+    outputRow += `photo${id}${generateRandomNumber(111, 999)},`;
     outputRow += `http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg,`;
     outputRow += `${faker.lorem.sentence()}\n`;
   }
 
   const csvRow = firstRow
-    ? `roomid,roomname,uniqId,photoUrl,photoCaption\n${outputRow}`
+    ? `roomid,roomname,photoid,photourl,photocaption\n${outputRow}`
     : `${outputRow}`;
   return csvRow;
 };
@@ -59,7 +62,7 @@ const createFiles = (totalEntries, entriesPerFile) => {
   // JSON: `/data/alldata/alldata${currentFile}.txt`
   // Rooms CSV: `/data/roomsdata/roomsdata${currentFile}.csv`
   // Photos CSV: `/data/gallerydata/gallerydata${currentFile}.csv`
-  let fileWriteStream = fs.createWriteStream(path.join(__dirname, `/data/gallerydata/gallerydata${currentFile}.csv`));
+  let fileWriteStream = fs.createWriteStream(path.join(__dirname, `/data/${currDir}/${currDir}${currentFile}.${currExt}`));
 
   const writeToFile = () => {
     if (((currentId - 1) % entriesPerFile === 0) && currentFile <= (totalEntries / entriesPerFile)) {

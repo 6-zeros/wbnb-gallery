@@ -2,9 +2,10 @@ const { Client } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-const createTableString = 'CREATE TABLE gallery( roomid INT NOT NULL, roomname TEXT NOT NULL, uniqId TEXT NOT NULL, photoURL TEXT NOT NULL, photoCaption TEXT NOT NULL)';
+const createTableString = 'CREATE TABLE gallery( roomid INT NOT NULL, roomname TEXT NOT NULL, photoid TEXT NOT NULL, photouRL TEXT NOT NULL, photocaption TEXT NOT NULL)';
 const currDir = 'gallerydata';
-const filePath = path.join(__dirname, '/data/gallerydata');
+const currTable = 'gallery';
+const columnToIndex = 'roomname';
 const start = new Date().getTime();
 let lengthOfDir = 0;
 
@@ -28,12 +29,12 @@ const populateDb = () => {
       if (number > lengthOfDir) {
         resolve();
       }
-      const csvToLoad = `COPY gallery FROM '${path.join(__dirname, `/data/gallerydata/gallerydata${number}.csv`)}' DELIMITER ',' CSV HEADER`;
+      const csvToLoad = `COPY ${currTable} FROM '${path.join(__dirname, `/data/${currDir}/${currDir}${number}.csv`)}' DELIMITER ',' CSV HEADER`;
 
       client.query(csvToLoad)
         .then(() => {
-          console.log(`${number}.csv successfully loaded!`);
-          console.log(`${(new Date().getTime() - start) / 1000} seconds have elapsed!\n\n`);
+          console.log(`\n${currDir}${number}.csv successfully loaded!`);
+          console.log(`${(new Date().getTime() - start) / 1000} seconds have elapsed!\n`);
         })
         .then(() => populateNextTable(number + 1))
         .catch(err => reject(err));
@@ -45,14 +46,14 @@ const populateDb = () => {
 
 client.connect()
   .then(() => console.log('Connected to postgreSQL!'))
-  .then(() => client.query('DROP TABLE IF EXISTS gallery'))
+  .then(() => client.query(`DROP TABLE IF EXISTS ${currTable}`))
   .then(() => client.query(createTableString))
-  .then(result => console.log('Table successfully created!', result))
+  .then(() => console.log('Table successfully created!'))
   .then(() => populateDb())
-  .then(() => console.log('Database successfully populated! Creating Index on "roomid"...'))
-  .then(() => client.query('CREATE INDEX roomid_index ON gallery (roomid)'))
+  .then(() => console.log(`Database successfully populated! Creating Index on "${columnToIndex}"...`))
+  .then(() => client.query(`CREATE INDEX ${columnToIndex}_index ON ${currTable} (${columnToIndex})`))
   .then(() => {
-    console.log(`\n\n\n\n————— Seeding completed in ${(new Date().getTime() - start) / 1000} seconds —————\n\n\n\n`);
+    console.log(`\n\n\n\n————— Seeding completed in ${(new Date().getTime() - start) / 1000} seconds —————\n\n\n\nExiting Seeding Script. Goodbye!`);
     process.exit();
   })
-  .catch(err => console.log('There was an unknown error.', err));
+  .catch(err => console.log('Uh oh. There was an error:\n\n', err));
