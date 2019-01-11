@@ -20,8 +20,8 @@ const generateRandomNumber = (min, max) => {
 const jsonGen = (id) => {
   const jsonObject = {
     roomId: id,
-    roomname: `room${id}`,
-    uniqId: `uniq${id}${faker.random.number()}`,
+    roomname: `roomname${id}`,
+    photoid: `uniq${id}${faker.random.number()}`,
     photo: [
       { url: `http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg`, caption: faker.lorem.sentence() },
       { url: `http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg`, caption: faker.lorem.sentence() },
