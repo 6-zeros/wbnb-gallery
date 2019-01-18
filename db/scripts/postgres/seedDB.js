@@ -10,7 +10,7 @@ const start = new Date().getTime();
 let lengthOfDir = 0;
 
 
-fs.readdir(`../data/${currDir}`, (err, files) => {
+fs.readdir(path.join(__dirname, `../data/${currDir}`), (err, files) => {
   if (err) {
     throw err;
   }
