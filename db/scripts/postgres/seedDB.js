@@ -22,7 +22,7 @@ const client = new Client({
   host: '127.0.0.1',
   port: 5432,
   database: 'wbnb',
-  user: 'postgres'
+  user: 'postgres',
 });
 
 const populateDb = () => {
