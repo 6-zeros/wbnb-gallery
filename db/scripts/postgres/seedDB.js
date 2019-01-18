@@ -3,14 +3,14 @@ const fs = require('fs');
 const path = require('path');
 
 const createTableString = 'CREATE TABLE gallery( roomid INT NOT NULL, roomname TEXT NOT NULL, photoid TEXT NOT NULL, photouRL TEXT NOT NULL, photocaption TEXT NOT NULL)';
-const currDir = 'gallerydata';
+const currDir = 'psqldata';
 const currTable = 'gallery';
 const columnToIndex = 'roomname';
 const start = new Date().getTime();
 let lengthOfDir = 0;
 
 
-fs.readdir(`./data/${currDir}`, (err, files) => {
+fs.readdir(`../data/${currDir}`, (err, files) => {
   if (err) {
     throw err;
   }
@@ -29,7 +29,7 @@ const populateDb = () => {
       if (number > lengthOfDir) {
         resolve();
       }
-      const csvToLoad = `COPY ${currTable} FROM '${path.join(__dirname, `/data/${currDir}/${currDir}${number}.csv`)}' DELIMITER ',' CSV HEADER`;
+      const csvToLoad = `COPY ${currTable} FROM '${path.join(__dirname, `../data/${currDir}/${currDir}${number}.csv`)}' DELIMITER ',' CSV HEADER`;
 
       client.query(csvToLoad)
         .then(() => {

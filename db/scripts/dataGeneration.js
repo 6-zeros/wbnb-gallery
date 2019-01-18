@@ -1,10 +1,11 @@
+/* eslint-disable no-nested-ternary */
 const fs = require('fs');
 const faker = require('faker');
 const path = require('path');
 
 let currentId = 1;
 let currentFile = 1;
-const currDir = 'gallerydata';
+const currDir = 'psqldata';
 const currExt = 'csv';
 let firstRow = true;
 const start = new Date().getTime();
@@ -40,7 +41,30 @@ const csvGen = (id) => {
   return csvRow;
 };
 
-const csvGen2 = (id) => {
+const csvGenCassandra = (id) => {
+  let outputRow = '';
+  const numberOfPhotos = generateRandomNumber(6, 11);
+  outputRow += `${id}|`;
+  outputRow += `roomname${id}|`;
+
+
+  for (let i = 1; i < numberOfPhotos; i += 1) {
+    if (i === 1) {
+      outputRow += `[["http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg", ${faker.lorem.sentence()}],`;
+    } else if (i === numberOfPhotos - 1) {
+      outputRow += `["http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg", ${faker.lorem.sentence()}]]\n`;
+    } else {
+      outputRow += `["http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg", ${faker.lorem.sentence()}],`;
+    }
+  }
+
+  const csvRow = firstRow
+    ? `roomid,roomname,photos\n${outputRow}`
+    : `${outputRow}`;
+  return csvRow;
+};
+
+const csvGenPSQL = (id) => {
   let outputRow = '';
   const numberOfPhotos = generateRandomNumber(6, 11);
 
@@ -48,7 +72,7 @@ const csvGen2 = (id) => {
     outputRow += `${id},`;
     outputRow += `roomname${id},`;
     outputRow += `photo${id}${generateRandomNumber(111, 999)},`;
-    outputRow += `http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(1, 981)}.jpg,`;
+    outputRow += `http://dx37dhl9dvhoj.cloudfront.net/img${generateRandomNumber(111, 999)}.jpg,`;
     outputRow += `${faker.lorem.sentence()}\n`;
   }
 
@@ -68,7 +92,7 @@ const createFiles = (totalEntries, entriesPerFile) => {
     if (((currentId - 1) % entriesPerFile === 0) && currentFile <= (totalEntries / entriesPerFile)) {
       console.log(`File ${currentFile} generating. Overall progress: ${Math.round((currentId / (totalEntries + 100)) * 100)}%`);
 
-      fileWriteStream = fs.createWriteStream(path.join(__dirname, `/data/gallerydata/gallerydata${currentFile}.csv`));
+      fileWriteStream = fs.createWriteStream(path.join(__dirname, `/data/${currDir}/${currDir}${currentFile}.${currExt}`));
       currentFile += 1;
       firstRow = true;
     }
@@ -80,7 +104,7 @@ const createFiles = (totalEntries, entriesPerFile) => {
       return;
     }
 
-    const proceed = fileWriteStream.write(csvGen2(currentId));
+    const proceed = fileWriteStream.write(csvGenPSQL(currentId));
     firstRow = false;
     if (proceed) {
       currentId += 1;
