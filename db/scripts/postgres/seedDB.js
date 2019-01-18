@@ -6,6 +6,7 @@ const createTableString = 'CREATE TABLE gallery( roomid INT NOT NULL, roomname T
 const currDir = 'psqldata';
 const currTable = 'gallery';
 const columnToIndex = 'roomname';
+const secondColumnToIndex = 'roomid';
 const start = new Date().getTime();
 let lengthOfDir = 0;
 
@@ -52,9 +53,10 @@ client.connect()
   .then(() => client.query(`DROP TABLE IF EXISTS ${currTable}`))
   .then(() => client.query(createTableString))
   .then(() => console.log('Table successfully created!'))
-  .then(() => populateDb())
-  .then(() => console.log(`Database successfully populated! Creating Index on "${columnToIndex}"...`))
   .then(() => client.query(`CREATE INDEX ${columnToIndex}_index ON ${currTable} (${columnToIndex})`))
+  .then(() => client.query(`CREATE INDEX ${secondColumnToIndex}_index ON ${currTable} (${secondColumnToIndex})`))
+  .then(() => console.log(`Database successfully populated! Creating Index on "${columnToIndex}" and "${secondColumnToIndex}"...`))
+  .then(() => populateDb())
   .then(() => {
     console.log(`\n\n\n\n————— Seeding completed in ${(new Date().getTime() - start) / 1000} seconds —————\n\n\n\nExiting Seeding Script. Goodbye!`);
     process.exit();
