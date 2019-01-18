@@ -32,7 +32,7 @@ const populateDb = () => {
       if (number > lengthOfDir) {
         resolve();
       }
-      const csvToLoad = `COPY ${currTable} FROM ../data/${currDir}/${currDir}${number}.csv DELIMITER ',' CSV HEADER`;
+      const csvToLoad = `COPY ${currTable} FROM "../data/${currDir}/${currDir}${number}.csv" DELIMITER ',' CSV HEADER`;
 
       client.query(csvToLoad)
         .then(() => {
