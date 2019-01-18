@@ -5,7 +5,7 @@
 /spec
 /coverage
 /db/images
-/db/scripts/data
+/db/scripts/localdata
 package-lock.json
 *.csv
 *.pem

@@ -4,6 +4,8 @@ const client = new Client({
   host: '127.0.0.1',
   port: 5432,
   database: 'wbnb',
+  user: 'postgres',
+  password: 'jhst6356',
 });
 
 client.connect()

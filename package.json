@@ -1,8 +1,8 @@
 {
-  "name": "",
+  "name": "wherebnb - gallery",
   "version": "",
-  "description": "",
-  "author": "",
+  "description": "Robust backend for a image gallery front end",
+  "author": "James Tsukamoto",
   "license": "",
   "engines": {
     "node": ">=6.13.0"
@@ -10,9 +10,10 @@
   "scripts": {
     "start": "node server/index.js",
     "build": "webpack --watch",
-    "seed": "node ./db/scripts/postgres/seedDB.js",
+    "seed": "node ./db/scripts/dataGeneration.js && node ./db/scripts/postgres/seedDB.js",
     "test": "jest --watch",
-    "dev": "npm run seed && npm run start"
+    "dev": "npm run seed && npm run start",
+    "create": "npm run seed && npm run build && npm run start"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

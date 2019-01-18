@@ -86,7 +86,7 @@ const createFiles = (totalEntries, entriesPerFile) => {
   // JSON: `/data/alldata/alldata${currentFile}.txt`
   // Rooms CSV: `/data/roomsdata/roomsdata${currentFile}.csv`
   // Photos CSV: `/data/gallerydata/gallerydata${currentFile}.csv`
-  let fileWriteStream = fs.createWriteStream(path.join(__dirname, `/data/${currDir}/${currDir}${currentFile}.${currExt}`));
+  let fileWriteStream = fs.createWriteStream(`../data/${currDir}/${currDir}${currentFile}.${currExt}`));
 
   const writeToFile = () => {
     if (((currentId - 1) % entriesPerFile === 0) && currentFile <= (totalEntries / entriesPerFile)) {

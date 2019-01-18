@@ -10,7 +10,7 @@ const start = new Date().getTime();
 let lengthOfDir = 0;
 
 
-fs.readdir(`../../../../data/${currDir}`, (err, files) => {
+fs.readdir(`../data/${currDir}`, (err, files) => {
   if (err) {
     throw err;
   }
@@ -23,6 +23,7 @@ const client = new Client({
   port: 5432,
   database: 'wbnb',
   user: 'postgres',
+  password: 'jhst6356',
 });
 
 const populateDb = () => {
@@ -31,7 +32,7 @@ const populateDb = () => {
       if (number > lengthOfDir) {
         resolve();
       }
-      const csvToLoad = `COPY ${currTable} FROM ../../../../data/${currDir}/${currDir}${number}.csv DELIMITER ',' CSV HEADER`;
+      const csvToLoad = `COPY ${currTable} FROM ../data/${currDir}/${currDir}${number}.csv DELIMITER ',' CSV HEADER`;
 
       client.query(csvToLoad)
         .then(() => {
