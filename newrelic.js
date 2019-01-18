@@ -9,11 +9,11 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['My Application'],
+  app_name: ['WBNB SDC'],
   /**
    * Your New Relic license key.
    */
-  license_key: 'license key here',
+  license_key: 'a997414fff49e2371d6ab7173ccaf44ddc7e6d04',
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing

@@ -1,19 +1,40 @@
+require('newrelic');
 const express = require('express');
+const redis = require('redis');
 const bodyParser = require('body-parser');
 
+const client = redis.createClient({ port: 6379 });
 const app = express();
-const PORT = 1337;
+const PORT = 3000;
 const psql = require('../db/index.js');
 
 app.use('/rooms/:id', express.static('./client/dist'));
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
+client.on('ready', () => {
+  console.log('Connected to Redis cache!');
+});
+
+client.on('error', (err) => { throw err; });
+
 app.get('/rooms/:id/photos', (req, res) => {
   const { id } = req.params;
-  psql.getPhotosByRoomId(id)
-    .then(photos => res.send(photos.rows))
-    .catch((err) => { throw err; });
+
+  return client.get(`roomid${id}`, (err, result) => {
+    if (result) {
+      const resultJSON = JSON.parse(result);
+      return res.status(200).json(resultJSON);
+    }
+
+    return psql.getPhotosByRoomId(id)
+      .then((photos) => {
+        const responseJSON = photos.rows;
+        client.setex(`roomid${id}`, 3600, JSON.stringify(responseJSON));
+        res.status(200).json(responseJSON);
+      })
+      .catch(error => res.send(error));
+  });
 });
 
 app.delete('/rooms/:id/photos', (req, res) => {
@@ -26,4 +47,3 @@ app.delete('/rooms/:id/photos', (req, res) => {
 app.listen(PORT, () => {
   console.log(`server listening on port, ${PORT}`);
 });
- 

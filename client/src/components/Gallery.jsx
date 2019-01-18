@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PhotoDisplay from './PhotoDisplay.jsx';
 import PhotoGallery from './PhotoGallery.jsx';
+// import newRelic from 'newrelic';
 
 class Gallery extends React.Component {
   constructor(props) {

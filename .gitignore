@@ -8,3 +8,7 @@
 /db/scripts/data
 package-lock.json
 *.csv
+*.pem
+/stress-testing
+*.log
+

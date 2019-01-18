@@ -20,6 +20,7 @@ fs.readdir(`../data/${currDir}`, (err, files) => {
 
 const client = new Client({
   host: 'localhost',
+  port: 5432,
   database: 'wbnb',
 });
 
