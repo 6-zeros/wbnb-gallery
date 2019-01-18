@@ -14,8 +14,8 @@ fs.readdir(`../data/${currDir}`, (err, files) => {
   if (err) {
     throw err;
   }
-  lengthOfDir = files.length - 1;
-  console.log(`There are ${lengthOfDir} files in the current directory`);
+  lengthOfDir = files.length - 2;
+  console.log(`There are ${files.length} files in the current directory`);
 });
 
 const client = new Client({
