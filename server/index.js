@@ -37,6 +37,13 @@ app.get('/rooms/:id/photos', (req, res) => {
   });
 });
 
+// loader.io stress testing key
+app.get('/loaderio-c71b09134700d98c0fbfb7984edbe137.txt', (req, res) => {
+  res.sendFile('/Users/tsukamoto/hr_repos/wbnb-gallery/server/loaderio-c71b09134700d98c0fbfb7984edbe137.txt', (err) => {
+    if (err) { throw err; }
+  });
+});
+
 app.delete('/rooms/:id/photos', (req, res) => {
   const { photoId } = req.params;
   psql.deletePhotoByPhotoId(photoId)
