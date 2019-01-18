@@ -2,6 +2,7 @@ require('newrelic');
 const express = require('express');
 const redis = require('redis');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const client = redis.createClient({ port: 6379 });
 const app = express();
@@ -39,7 +40,7 @@ app.get('/rooms/:id/photos', (req, res) => {
 
 // loader.io stress testing key
 app.get('/loaderio-c71b09134700d98c0fbfb7984edbe137.txt', (req, res) => {
-  res.sendFile('/Users/tsukamoto/hr_repos/wbnb-gallery/server/loaderio-c71b09134700d98c0fbfb7984edbe137.txt', (err) => {
+  res.sendFile(path.join(__dirname, 'loaderio-c71b09134700d98c0fbfb7984edbe137.txt'), (err) => {
     if (err) { throw err; }
   });
 });
