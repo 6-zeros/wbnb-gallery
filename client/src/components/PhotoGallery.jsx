@@ -63,11 +63,11 @@ class PhotoGallery extends React.Component {
           <span className="closeBtn" onClick={toggleGallery}>&times;</span>
           <div className="mainDisplay">
             <h1 className="btn" id="back" onClick={this.previous.bind(this)} value="back">{'<'}</h1>
-            <img id="leadImage" src={photos[clickIndex].url} onClick={this.forward.bind(this)} />
+            <img id="leadImage" src={photos[clickIndex].photourl} onClick={this.forward.bind(this)} />
             <h1 className="btn" id="forward" onClick={this.forward.bind(this)} value="forward">{'>'}</h1>
           </div>
           <div className="description">
-            <p className="caption">{`${clickIndex + 1}/${length + 1}: ${photos[clickIndex].caption}`}</p>
+            <p className="caption">{`${clickIndex + 1}/${length + 1}: ${photos[clickIndex].photocaption}`}</p>
             <p className="showList" onClick={this.showOrHideList.bind(this)}>{showList ? 'hide photo list' : 'show photo list'}</p>
           </div>
           <div className="photo-carousel" id={showList ? 'showCarousel' : null}>

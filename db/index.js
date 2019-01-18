@@ -1,33 +1,33 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/errbnb', { useNewUrlParser: true });
-const connect = mongoose.connection;
-connect.on('error', console.error.bind(console, 'connection error:'));
-connect.once('open', function callback () {
-  console.log('Connected To Mongo Database');
-})
+const { Client } = require('pg');
 
-const listingSchema = mongoose.Schema({
-  _id: String,
-  photo: [{
-    url: String,
-    caption: String
-    }]
+const client = new Client({
+  host: 'localhost',
+  port: 5432,
+  database: 'wbnb',
 });
 
-const Listing = mongoose.model('Listing', listingSchema);
+client.connect()
+  .then(() => console.log('Successfully connected to PostgreSQL!'))
+  .catch((err) => { throw err; });
 
-const getPhotosById = (id, callback) => {
-  Listing.findOne({_id: id}, (err, entry) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, entry);
-    }
-  })
+const getPhotosByRoomId = (roomId) => {
+  return new Promise((resolve, reject) => {
+    client.query(`SELECT photourl, photocaption FROM gallery WHERE roomname = 'roomname${roomId}'`)
+      .then(res => resolve(res))
+      .catch(err => reject(err));
+  });
 };
 
-module.exports = {
-    Listing,
-    getPhotosById,
-    connect,
+const deletePhotoByPhotoId = (photoId) => {
+  client.query(`DELETE FROM gallery WHERE photoid = '${photoId}'`)
+    .then(res => res)
+    .catch((err) => { throw err; });
 };
+
+const updateCaptionById = (photoId, newCaption) => {
+  client.query(`UPDATE gallery SET photocaption = ${newCaption} WHERE photoid = '${photoId}'`)
+    .then(res => res)
+    .catch((err) => { throw err; });
+}
+
+module.exports = { getPhotosByRoomId, deletePhotoByPhotoId, updateCaptionById };
