@@ -30,6 +30,6 @@ const updateCaptionById = (photoId, newCaption) => {
   client.query(`UPDATE gallery SET photocaption = ${newCaption} WHERE photoid = '${photoId}'`)
     .then(res => res)
     .catch((err) => { throw err; });
-}
+};
 
 module.exports = { getPhotosByRoomId, deletePhotoByPhotoId, updateCaptionById };

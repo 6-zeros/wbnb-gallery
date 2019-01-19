@@ -6,7 +6,7 @@ const path = require('path');
 
 const client = redis.createClient({ port: 6379 });
 const app = express();
-const PORT = 3000;
+const PORT = 80;
 const psql = require('../db/index.js');
 
 app.use('/rooms/:id', express.static('./client/dist'));
