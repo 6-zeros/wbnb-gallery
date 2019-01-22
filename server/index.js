@@ -24,6 +24,7 @@ client.on('error', (err) => { throw err; });
 
 app.get('/rooms/:id/photos', (req, res) => {
   const { id } = req.params;
+  console.log(`Server pinged @ ${new Date().toLocaleTimeString()} with request for room ${id}.`);
 
   return client.get(`roomid${id}`, (err, result) => {
     if (result) {
