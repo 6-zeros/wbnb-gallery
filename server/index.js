@@ -4,7 +4,10 @@ const redis = require('redis');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const client = redis.createClient({ port: 6379 });
+const client = redis.createClient({
+  host: '52.11.250.178',
+  port: 6379,
+});
 const app = express();
 const PORT = 3000;
 const psql = require('../db/index.js');
