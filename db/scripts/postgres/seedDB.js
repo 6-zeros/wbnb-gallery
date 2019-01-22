@@ -20,7 +20,7 @@ fs.readdir(path.join(__dirname, `/../data/${currDir}`), (err, files) => {
 });
 
 const client = new Client({
-  host: '127.0.0.1',
+  host: '35.164.21.106',
   port: 5432,
   database: 'wbnb',
   user: 'postgres',
