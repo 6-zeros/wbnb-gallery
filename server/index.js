@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const client = redis.createClient({
-  password: 'testpw',
-  host: '18.236.101.202',
+  password: 'X3hgGnPMP*$GFkpS5!Sd',
+  host: '34.209.48.207',
   port: 6379,
 });
 const app = express();
