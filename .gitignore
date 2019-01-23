@@ -12,3 +12,4 @@ package-lock.json
 /stress-testing
 *.log
 
+config.js
