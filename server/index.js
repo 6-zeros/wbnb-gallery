@@ -29,12 +29,14 @@ app.get('/rooms/:id/photos', (req, res) => {
 
   return client.get(`roomid${id}`, (err, result) => {
     if (result) {
+      console.log(`Retrieved photos for room ${id} from the cache.`);
       const resultJSON = JSON.parse(result);
       return res.status(200).json(resultJSON);
     }
 
     return psql.getPhotosByRoomId(id)
       .then((photos) => {
+        console.log(`Retrieved photos for room ${id} from the database.`);
         const responseJSON = photos.rows;
         client.setex(`roomid${id}`, 3600, JSON.stringify(responseJSON));
         res.status(200).json(responseJSON);
