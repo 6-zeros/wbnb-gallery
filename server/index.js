@@ -3,9 +3,10 @@ const express = require('express');
 const redis = require('redis');
 const bodyParser = require('body-parser');
 const path = require('path');
+const token = require('../config.js').REDIS_TOKEN
 
 const client = redis.createClient({
-  password: 'X3hgGnPMP*$GFkpS5!Sd',
+  password: `${token}`,
   host: '34.209.48.207',
   port: 6379,
 });
