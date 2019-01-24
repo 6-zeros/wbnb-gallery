@@ -3,6 +3,7 @@ const express = require('express');
 const redis = require('redis');
 const bodyParser = require('body-parser');
 const path = require('path');
+const morgan = require('morgan');
 const token = require('../config.js').REDIS_TOKEN
 
 const client = redis.createClient({
@@ -17,6 +18,7 @@ const psql = require('../db/index.js');
 app.use('/rooms/:id', express.static('./client/dist'));
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
+app.use(morgan('dev'));
 
 client.on('ready', () => {
   console.log('Connected to Redis cache!');
@@ -26,23 +28,24 @@ client.on('error', (err) => { throw err; });
 
 app.get('/rooms/:id/photos', (req, res) => {
   const { id } = req.params;
-  console.log(`Server pinged @ ${new Date().toLocaleTimeString()} with request for room ${id}.`);
 
   return client.get(`roomid${id}`, (err, result) => {
     if (result) {
-      console.log(`Retrieved photos for room ${id} from the cache.`);
       const resultJSON = JSON.parse(result);
       return res.status(200).json(resultJSON);
     }
 
+    if (err) {
+      return res.status(500);
+    }
+
     return psql.getPhotosByRoomId(id)
       .then((photos) => {
-        console.log(`Retrieved photos for room ${id} from the database.`);
         const responseJSON = photos.rows;
         client.setex(`roomid${id}`, 3600, JSON.stringify(responseJSON));
         res.status(200).json(responseJSON);
       })
-      .catch(error => res.send(error));
+      .catch(error => res.status(500).send(error));
   });
 });
 
